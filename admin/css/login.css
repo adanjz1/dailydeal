@@ -1,0 +1,73 @@
+/*----------------------------------------
+			abbijan
+	
+----------------------------------------*/
+
+body {
+	background: #FFFFFF url('../images/lbg.png') repeat top center;
+	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+	margin: 0 auto;
+	padding: 0;
+	font-size: 11px;
+	color: #000000;
+}
+
+a {
+	color: #369DDB;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #96E706;
+	text-decoration: none;
+}
+
+h1 {
+	font-size: 15px;
+	color: #000000;
+	padding: 0px 0px 0px 6px;
+	margin-top: 14;
+}
+
+h2 {
+	font-size: 12px;
+	color: #000000;
+	border-bottom: 2px solid #EEEEEE;
+	padding: 0px 0px 0px 6px;
+	margin-top: 0;
+	margin-bottom: 14px;
+}
+
+.submit {
+	padding: 4px 10px;
+	background: #AB32FF;
+	border: 1px solid #FEFEFE;
+	color: #FFFFFF;
+	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	text-align: center;
+	cursor: pointer;
+	overflow: visible;
+}
+
+.submit:hover {
+	background: #777;
+}
+
+input.textbox, select.textbox2, .textbox2, textarea.textbox2, select.field { 
+	background-color: #FFFFFF;
+	font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+	font-size: 11px;
+	margin: 0;
+	padding: 3px;
+	border: 1px solid #E9E9E9;
+}
+
+textarea {
+	overflow: auto;
+}
+
+.footer {
+	color: #444444;
+}
