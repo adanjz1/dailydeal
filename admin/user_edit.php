@@ -169,7 +169,7 @@ if (isset($_POST['action']) && $_POST['action'] == "edituser")
 				<option value="">-- Please select your country --</option>
 				<?php
 
-					$sql_country = "SELECT * FROM abbijan_countries ORDER BY name ASC";
+					$sql_country = "SELECT * FROM abbijan_countries where active=1 ORDER BY name ASC";
 					$rs_country = smart_mysql_query($sql_country);
 					$total_country = mysql_num_rows($rs_country);
 

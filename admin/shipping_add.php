@@ -101,7 +101,7 @@ if (isset($_POST['action']) && $_POST['action'] == "add_shipping")
 				<div class="even"><input type="checkbox" name="country[]" value="all" <?php echo ($country == "all") ? "checked='checked'" : ""; ?>>All Countries</div>
 				<?php
 
-					$countries_query = "SELECT * FROM abbijan_countries ORDER BY name";
+					$countries_query = "SELECT * FROM abbijan_countries where active=1 ORDER BY name";
 					$countries_result = smart_mysql_query($countries_query);
 
 					if (mysql_num_rows($countries_result) > 0)

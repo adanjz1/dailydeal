@@ -384,8 +384,18 @@
 		<div style="width: 100%; text-align: center; background: #F7F7F7; border-radius: 7px; padding: 15px 10px;">
 			<select name="shipping_method_id" id="shipping_method_id" style="width: 240px;" onchange="javascript:hiddenDiv()">
 				<option value="">--- Select shipping address ---</option>
-				<?php while ($s_row = mysql_fetch_array($s_result)) { ?>
-					<option value="<?php echo $s_row['shipping_id']; ?>" <?php if ($shipping_method_id == $s_row['shipping_id']) echo 'selected="selected"'; ?>><?php echo $s_row['shipping_name']." : ".$s_row['fname']." ".$s_row['lname']." (".$s_row['address'].", ".$s_row['city'].", ".$s_row['state'].", ".$s_row['zip'].")"; ?></option>
+				<?php while ($s_row = mysql_fetch_array($s_result)) { 
+                                        if(empty($s_row['address']) && empty($s_row['city']) && empty($s_row['state']) && empty($s_row['zip'])){
+                                            ?>
+                                                <option value="<?php echo $s_row['shipping_id']; ?>" <?php if ($shipping_method_id == $s_row['shipping_id']) echo 'selected="selected"'; ?>><?php echo $s_row['shipping_name']." : ".$s_row['fname']." ".$s_row['lname']." (Self collection)"; ?></option>
+                                            <?php
+                                        }else{
+                                            ?>
+                                                <option value="<?php echo $s_row['shipping_id']; ?>" <?php if ($shipping_method_id == $s_row['shipping_id']) echo 'selected="selected"'; ?>><?php echo $s_row['shipping_name']." : ".$s_row['fname']." ".$s_row['lname']." (".$s_row['address'].", ".$s_row['city'].", ".$s_row['state'].", ".$s_row['zip'].")"; ?></option>
+                                            <?php
+                                        }
+                                    ?>
+					
 				<?php } ?>
 			</select>
 		</div>
@@ -428,7 +438,7 @@
 				<select name="country" class="textbox2" id="country" style="width: 170px;" onChange="document.form1.submit()">
 					<option value="">--- Select country ---</option>
 					<?php
-						$sql_country = "SELECT * FROM abbijan_countries ORDER BY name ASC";
+						$sql_country = "SELECT * FROM abbijan_countries where active=1 ORDER BY name ASC";
 						$rs_country = smart_mysql_query($sql_country);
 						$total_country = mysql_num_rows($rs_country);
 
@@ -593,7 +603,7 @@
 				<select name="billing_country" class="textbox2" id="billing_country" style="width: 170px;">
 					<option value="">--- Select country ---</option>
 					<?php
-						$sql_country = "SELECT * FROM abbijan_countries ORDER BY name ASC";
+						$sql_country = "SELECT * FROM abbijan_countries where active=1 ORDER BY name ASC";
 						$rs_country = smart_mysql_query($sql_country);
 						$total_country = mysql_num_rows($rs_country);
 

@@ -66,10 +66,10 @@
 	if (isset($_GET['page']) && is_numeric($_GET['page']) && $_GET['page'] > 0) { $page = (int)$_GET['page']; } else { $page = 1; }
 	$from = ($page-1)*$results_per_page;
 
-	$query = "SELECT * FROM abbijan_countries ORDER BY name ASC LIMIT $from, $results_per_page";
+	$query = "SELECT * FROM abbijan_countries where active=1 ORDER BY name ASC LIMIT $from, $results_per_page";
 	$result = smart_mysql_query($query);
 
-	$total_result = smart_mysql_query("SELECT * FROM abbijan_countries ORDER BY name ASC");
+	$total_result = smart_mysql_query("SELECT * FROM abbijan_countries where active=1 ORDER BY name ASC");
 	$total = mysql_num_rows($total_result);
 
 	$cc = 0;
