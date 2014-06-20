@@ -70,7 +70,7 @@ if (isset($_POST['action']) && $_POST['action'] == "login")
 <table align="center" cellpadding="5" cellspacing="0" border="0" align="center">
 <tr>
 	<td height="170" valign="bottom" align="center">
-		<a target="_blank" href=""><img src="images/abbijan_logo.png" alt="abbijan" title="abbijan" border="0" /></a>
+		<a target="_blank" href=""><img src="images/abbijan_logo.png" height="100" alt="abbijan" title="abbijan" border="0" /></a>
 		<br/><br/>
 	</td>
 </tr>

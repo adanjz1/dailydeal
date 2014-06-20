@@ -28,6 +28,35 @@
 						//return '<span id="fancybox-title-over">Image ' + (currentIndex + 1) + ' / ' + currentArray.length + (title.length ? ' &nbsp; ' + title : '') + '</span>';
 					}
 					});	
+                                        
+                    $('.shipping_method_radio').click(function(){
+                        if($(this).val()==1){
+                            $('#addressTR').val('-');
+                            $('#addressTR').hide();
+                            $('#address2TR').hide();
+                            $('#countryTR').val('1');
+                            $('#countryTR').hide();
+                            $('#cityTR').val('-');
+                            $('#cityTR').hide();
+                            $('#stateTR').val('-');
+                            $('#stateTR').hide();
+                            $('#zipTR').val('-');
+                            $('#zipTR').hide();
+                        }else{
+                            $('#addressTR').val('');
+                            $('#addressTR').show();
+                            $('#address2TR').show();
+                            $('#countryTR').val(0);
+                            $('#countryTR').show();
+                            $('#cityTR').val('');
+                            $('#cityTR').show();
+                            $('#stateTR').val('');
+                            $('#stateTR').show();
+                            $('#zipTR').val('');
+                            $('#zipTR').show();
+                        }
+                    });
+
 		});
 
 		$(document).ready(function() {
@@ -42,7 +71,7 @@
 
 <div id="header">
 	<a href="#" class="scrollup">Top</a>
-	<div id="logo"><a href="<?php echo SITE_URL; ?>" title="<?php echo SITE_TITLE; ?>"><img src="/images/logo.png" alt="<?php echo SITE_TITLE; ?>" border="0" /></a></div>
+        <div id="logo"><a href="<?php echo SITE_URL; ?>" title="<?php echo SITE_TITLE; ?>"><img height="75px" src="/images/logo.png" alt="<?php echo SITE_TITLE; ?>" border="0" /></a></div>
 
 	<!--
 	<div id="share-box">

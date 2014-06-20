@@ -140,6 +140,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "edit")
 		$start_date			= mysql_real_escape_string(getPostParameter('start_date'));
 		$start_time			= mysql_real_escape_string(getPostParameter('start_time'));
 		$end_date			= mysql_real_escape_string(getPostParameter('end_date'));
+                if($end_date == "") $end_date = '2099-12-31';
 		$end_time			= mysql_real_escape_string(getPostParameter('end_time'));
 		if ($end_time == "") $end_time = "00:00";
 		$sale_start_date	= $start_date." ".$start_time;
@@ -156,7 +157,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "edit")
 		$status				= mysql_real_escape_string(getPostParameter('status'));
 
 
-		if (!($deal_title && $price && $end_date && $description && $status))
+		if (!($deal_title && $price  && $description && $status))
 		{
 			$errors[] = "Please ensure that all fields marked with an asterisk are complete";
 		}
@@ -454,7 +455,7 @@ if (isset($_POST["action"]) && $_POST["action"] == "edit")
 				<td valign="middle"><input type="text" name="start_date" id="start_date" value="<?php echo substr($row['start_date'], 0, 10); ?>" size="10" maxlength="10" class="textbox" />&nbsp; <input type="text" name="start_time" id="start_time" value="<?php echo substr($row['start_date'], -8, 5); ?>" size="6" maxlength="8" class="textbox" /><span class="note">YYYY-MM-DD &nbsp; HH:MM</span></td>
             </tr>
             <tr>
-				<td valign="middle" align="right" class="tb1"><span class="req">* </span>Sale End Date:</td>
+				<td valign="middle" align="right" class="tb1">Sale End Date:</td>
 				<td valign="middle"><input type="text" name="end_date" id="end_date" value="<?php echo substr($row['end_date'], 0, 10); ?>" size="10" maxlength="10" class="textbox" />&nbsp; <input type="text" name="end_time" id="end_time" value="<?php echo substr($row['end_date'], -8, 5); ?>" size="6" maxlength="8" class="textbox" /><span class="note">YYYY-MM-DD &nbsp; HH:MM</span></td>
             </tr>
             <tr>

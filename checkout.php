@@ -59,7 +59,7 @@
 			$country	= mysql_real_escape_string(getPostParameter('country'));
 			$phone		= mysql_real_escape_string(getPostParameter('phone'));
 
-			if (!($fname && $lname && $address && $city && $state && $zip && $country && $phone))
+			if (!($fname && $lname && $phone))
 			{
 				$errs[] = "Please enter shipping information";
 			}
@@ -97,47 +97,47 @@
 			$errs[] = "Please select shipping method";
 		}
 
-		if (!$payment_method)
-		{
-			$errs[] = "Please select payment method";
-		}
-		else
-		{
-			if ($payment_method == 2)
-			{
-				$cc_fname			= mysql_real_escape_string(getPostParameter('cc_fname'));
-				$cc_lname			= mysql_real_escape_string(getPostParameter('cc_lname'));
-				$cc_type			= mysql_real_escape_string(getPostParameter('cc_type'));
-				$cc_number			= mysql_real_escape_string(getPostParameter('cc_number'));
-				$cc_month			= mysql_real_escape_string(getPostParameter('cc_month'));
-				$cc_year			= mysql_real_escape_string(getPostParameter('cc_year'));
-				$exp_date			= $cc_month."".$cc_year; //$exp_date = $cc_month."".substr($cc_year, -2);
-				$cc_cvv				= mysql_real_escape_string(getPostParameter('cc_cvv'));
-				$billing_address	= mysql_real_escape_string(getPostParameter('billing_address'));
-				$billing_address2	= mysql_real_escape_string(getPostParameter('billing_address2'));
-				$billing_city		= mysql_real_escape_string(getPostParameter('billing_city'));
-				$billing_state		= mysql_real_escape_string(getPostParameter('billing_state'));
-				$billing_zip		= mysql_real_escape_string(getPostParameter('billing_zip'));
-				$billing_country	= mysql_real_escape_string(getPostParameter('billing_country'));
-				$billing_phone		= mysql_real_escape_string(getPostParameter('billing_phone'));
-
-				if (!($cc_fname && $cc_lname && $cc_number && $cc_month && $cc_year && $cc_cvv && $billing_address && $billing_city && $billing_state && $billing_zip && $billing_country && $billing_phone))
-				{
-					$errs[] = "Please fill in all required fields";
-				}
-				elseif (!$cc_type)
-				{
-					$errs[] = "Please select credit card type";
-				}
-			}
-			else if ($payment_method == 3)
-			{
-				if (GetUserBalance($userid, $hide_currency = 1) < $order_total)
-				{
-					$errs[] = "Sorry, you have not enough money in your account to complete order";
-				}
-			}
-		}
+//		if (!$payment_method)
+//		{
+//			$errs[] = "Please select payment method";
+//		}
+//		else
+//		{
+//			if ($payment_method == 2)
+//			{
+//				$cc_fname			= mysql_real_escape_string(getPostParameter('cc_fname'));
+//				$cc_lname			= mysql_real_escape_string(getPostParameter('cc_lname'));
+//				$cc_type			= mysql_real_escape_string(getPostParameter('cc_type'));
+//				$cc_number			= mysql_real_escape_string(getPostParameter('cc_number'));
+//				$cc_month			= mysql_real_escape_string(getPostParameter('cc_month'));
+//				$cc_year			= mysql_real_escape_string(getPostParameter('cc_year'));
+//				$exp_date			= $cc_month."".$cc_year; //$exp_date = $cc_month."".substr($cc_year, -2);
+//				$cc_cvv				= mysql_real_escape_string(getPostParameter('cc_cvv'));
+//				$billing_address	= mysql_real_escape_string(getPostParameter('billing_address'));
+//				$billing_address2	= mysql_real_escape_string(getPostParameter('billing_address2'));
+//				$billing_city		= mysql_real_escape_string(getPostParameter('billing_city'));
+//				$billing_state		= mysql_real_escape_string(getPostParameter('billing_state'));
+//				$billing_zip		= mysql_real_escape_string(getPostParameter('billing_zip'));
+//				$billing_country	= mysql_real_escape_string(getPostParameter('billing_country'));
+//				$billing_phone		= mysql_real_escape_string(getPostParameter('billing_phone'));
+//
+//				if (!($cc_fname && $cc_lname && $cc_number && $cc_month && $cc_year && $cc_cvv && $billing_address && $billing_city && $billing_state && $billing_zip && $billing_country && $billing_phone))
+//				{
+//					$errs[] = "Please fill in all required fields";
+//				}
+//				elseif (!$cc_type)
+//				{
+//					$errs[] = "Please select credit card type";
+//				}
+//			}
+//			else if ($payment_method == 3)
+//			{
+//				if (GetUserBalance($userid, $hide_currency = 1) < $order_total)
+//				{
+//					$errs[] = "Sorry, you have not enough money in your account to complete order";
+//				}
+//			}
+//		}
 
 
 		if (count($errs) == 0)
@@ -157,128 +157,128 @@
 					smart_mysql_query("INSERT INTO abbijan_shipping SET user_id='$userid', shipping_name='My Shipping Address', fname='$fname', lname='$lname', address='$address', address2='$address2', city='$city', state='$state', zip='$zip', country='$country', phone='$phone'");
 				}
 				
-				if ($payment_method == 1) // paypal ipn
-				{
-					$oresult = smart_mysql_query("INSERT INTO abbijan_orders SET reference_id='$reference_id', shipping_id='$shipping_id', user_id='$userid', shipping_method_id='$shipping_method', shipping_details='$shipping_address', payment_method_id='$payment_method', payment_method='paypal', currency='".SITE_CURRENCY_CODE."', shipping_total='$shipping_total', total='$order_total', status='pending', created=NOW()");
-					$order_id = mysql_insert_id();
-
-					if ($total > 0)
-					{
-						while ($row = mysql_fetch_array($result))
-						{
-							$item_id		= (int)$row['item_id'];
-							$title			= mysql_real_escape_string($row['title']);
-							$quantity		= mysql_real_escape_string($_SESSION['quantity'][$item_id]);
-							$item_price		= mysql_real_escape_string($row['price']);
-
-							smart_mysql_query("INSERT INTO abbijan_order_items SET order_id='".(int)$order_id."', user_id='$userid', item_id='$item_id', item_title='$title', item_quantity='$quantity', item_price='$item_price'");
-						}
-					}
-
-					header ("Location: /paypal_redirect.php");
-					exit();
-
-				}
-				elseif ($payment_method == 2) // credit card
-				{
-					// if Paypal
-					if (CC_GATEWAY == "paypal")
-					{
-						require_once("inc/payments/paypal.inc.php");
-
-						$paymentType		= urlencode('Sale');
-						$firstName			= urlencode($cc_fname);
-						$lastName			= urlencode($cc_lname);
-						$creditCardType		= urlencode($cc_type);
-						$creditCardNumber	= urlencode($cc_number);
-						$padDateMonth		= urlencode(str_pad($cc_month, 2, '0', STR_PAD_LEFT));
-						$expDateYear		= urlencode($cc_year);
-						$cvv2Number			= urlencode($cc_cvv);
-						$address1			= urlencode($billing_address);
-						$address2			= urlencode($billing_address2);
-						$city				= urlencode($billing_city);
-						$state				= urlencode($billing_state);
-						$zip				= urlencode($billing_zip);
-						$country			= urlencode($billing_country);		// US or other valid country code
-						$amount				= urlencode($order_total);
-						$currencyID			= urlencode(SITE_CURRENCY_CODE);	// or other currency ('GBP', 'EUR', 'JPY', 'CAD', 'AUD')
-
-						// add request-specific fields to the request string
-						$nvpStr =	"&PAYMENTACTION=$paymentType&AMT=$amount&CREDITCARDTYPE=$creditCardType&ACCT=$creditCardNumber".
-									"&EXPDATE=$padDateMonth$expDateYear&CVV2=$cvv2Number&FIRSTNAME=$firstName&LASTNAME=$lastName".
-									"&STREET=$address1&CITY=$city&STATE=$state&ZIP=$zip&COUNTRYCODE=$country&CURRENCYCODE=$currencyID";
-
-						// execute the API operation
-						$httpParsedResponseAr = PPHttpPost('DoDirectPayment', $nvpStr);
-
-						// if successfull payment
-						if ("Success" == $httpParsedResponseAr["ACK"])
-						{
-							$success			= 1; // required
-							$payment_method		= "credit card";
-							$payment_details	= $httpParsedResponseAr["TRANSACTIONID"];
-							$order_status		= "complete";
-							
-						}
-						else
-						{
-							$payment_method		= "credit card";
-							$payment_details	= $httpParsedResponseAr["CORRELATIONID"];
-							$decline_reason		= mysql_real_escape_string(urldecode($httpParsedResponseAr["L_LONGMESSAGE0"]));
-							$order_status		= "declined";
-						}
-					}
-					// if Authorize.net
-					else if (CC_GATEWAY == "authorizenet")
-					{
-						require_once("inc/payments/authorizenet.inc.php");
-					}
-					// other payment gateway
-					else if (CC_GATEWAY == "other")
-					{
-						// procceed credit cart with other payment gateway
-						// add your code here
-					}
-
-
-					// if payment was successful
-					if ($success == 1)
-					{
-						$oresult = smart_mysql_query("INSERT INTO abbijan_orders SET reference_id='$reference_id', shipping_id='$shipping_id', user_id='$userid', shipping_method_id='$shipping_method', shipping_details='$shipping_address', payment_method_id='$payment_method', payment_method='credit card', payment_details='$payment_details', shipping_total='$shipping_total', total='$order_total', status='$order_status', created=NOW()");
-						$order_id = mysql_insert_id();
-
-						if ($total > 0)
-						{
-							while ($row = mysql_fetch_array($result))
-							{
-								$item_id		= (int)$row['item_id'];
-								$title			= mysql_real_escape_string($row['title']);
-								$quantity		= mysql_real_escape_string($_SESSION['quantity'][$item_id]);
-								$item_price		= mysql_real_escape_string($row['price']);
-
-								smart_mysql_query("INSERT INTO abbijan_order_items SET order_id='".(int)$order_id."', user_id='$userid', item_id='$item_id', item_title='$title', item_quantity='$quantity', item_price='$item_price'");
-							}
-						}
-
-						// send order receipt
-						SendReceipt($order_id);
-
-						unset($_SESSION['cart_items'], $_SESSION['quantity'], $_SESSION['ShippingPrice'], $_SESSION['Total']);
-						
-						header ("Location: /payment_success.php");
-						exit();				
-					}
-					else
-					{
-						smart_mysql_query("INSERT INTO abbijan_orders SET reference_id='$reference_id', shipping_id='$shipping_id', user_id='$userid', shipping_method_id='$shipping_method', shipping_details='$shipping_address', payment_method_id='$payment_method', payment_method='$payment_method_name', payment_details='$payment_details', total='$order_total', status='$order_status', reason='$decline_reason', created=NOW()");
-
-						header ("Location: /payment_cancelled.php");
-						exit;
-					}
-
-				}
-				else
-				{
+//				if ($payment_method == 1) // paypal ipn
+//				{
+//					$oresult = smart_mysql_query("INSERT INTO abbijan_orders SET reference_id='$reference_id', shipping_id='$shipping_id', user_id='$userid', shipping_method_id='$shipping_method', shipping_details='$shipping_address', payment_method_id='$payment_method', payment_method='paypal', currency='".SITE_CURRENCY_CODE."', shipping_total='$shipping_total', total='$order_total', status='pending', created=NOW()");
+//					$order_id = mysql_insert_id();
+//
+//					if ($total > 0)
+//					{
+//						while ($row = mysql_fetch_array($result))
+//						{
+//							$item_id		= (int)$row['item_id'];
+//							$title			= mysql_real_escape_string($row['title']);
+//							$quantity		= mysql_real_escape_string($_SESSION['quantity'][$item_id]);
+//							$item_price		= mysql_real_escape_string($row['price']);
+//
+//							smart_mysql_query("INSERT INTO abbijan_order_items SET order_id='".(int)$order_id."', user_id='$userid', item_id='$item_id', item_title='$title', item_quantity='$quantity', item_price='$item_price'");
+//						}
+//					}
+//
+//					header ("Location: /paypal_redirect.php");
+//					exit();
+//
+//				}
+//				elseif ($payment_method == 2) // credit card
+//				{
+//					// if Paypal
+//					if (CC_GATEWAY == "paypal")
+//					{
+//						require_once("inc/payments/paypal.inc.php");
+//
+//						$paymentType		= urlencode('Sale');
+//						$firstName			= urlencode($cc_fname);
+//						$lastName			= urlencode($cc_lname);
+//						$creditCardType		= urlencode($cc_type);
+//						$creditCardNumber	= urlencode($cc_number);
+//						$padDateMonth		= urlencode(str_pad($cc_month, 2, '0', STR_PAD_LEFT));
+//						$expDateYear		= urlencode($cc_year);
+//						$cvv2Number			= urlencode($cc_cvv);
+//						$address1			= urlencode($billing_address);
+//						$address2			= urlencode($billing_address2);
+//						$city				= urlencode($billing_city);
+//						$state				= urlencode($billing_state);
+//						$zip				= urlencode($billing_zip);
+//						$country			= urlencode($billing_country);		// US or other valid country code
+//						$amount				= urlencode($order_total);
+//						$currencyID			= urlencode(SITE_CURRENCY_CODE);	// or other currency ('GBP', 'EUR', 'JPY', 'CAD', 'AUD')
+//
+//						// add request-specific fields to the request string
+//						$nvpStr =	"&PAYMENTACTION=$paymentType&AMT=$amount&CREDITCARDTYPE=$creditCardType&ACCT=$creditCardNumber".
+//									"&EXPDATE=$padDateMonth$expDateYear&CVV2=$cvv2Number&FIRSTNAME=$firstName&LASTNAME=$lastName".
+//									"&STREET=$address1&CITY=$city&STATE=$state&ZIP=$zip&COUNTRYCODE=$country&CURRENCYCODE=$currencyID";
+//
+//						// execute the API operation
+//						$httpParsedResponseAr = PPHttpPost('DoDirectPayment', $nvpStr);
+//
+//						// if successfull payment
+//						if ("Success" == $httpParsedResponseAr["ACK"])
+//						{
+//							$success			= 1; // required
+//							$payment_method		= "credit card";
+//							$payment_details	= $httpParsedResponseAr["TRANSACTIONID"];
+//							$order_status		= "complete";
+//							
+//						}
+//						else
+//						{
+//							$payment_method		= "credit card";
+//							$payment_details	= $httpParsedResponseAr["CORRELATIONID"];
+//							$decline_reason		= mysql_real_escape_string(urldecode($httpParsedResponseAr["L_LONGMESSAGE0"]));
+//							$order_status		= "declined";
+//						}
+//					}
+//					// if Authorize.net
+//					else if (CC_GATEWAY == "authorizenet")
+//					{
+//						require_once("inc/payments/authorizenet.inc.php");
+//					}
+//					// other payment gateway
+//					else if (CC_GATEWAY == "other")
+//					{
+//						// procceed credit cart with other payment gateway
+//						// add your code here
+//					}
+//
+//
+//					// if payment was successful
+//					if ($success == 1)
+//					{
+//						$oresult = smart_mysql_query("INSERT INTO abbijan_orders SET reference_id='$reference_id', shipping_id='$shipping_id', user_id='$userid', shipping_method_id='$shipping_method', shipping_details='$shipping_address', payment_method_id='$payment_method', payment_method='credit card', payment_details='$payment_details', shipping_total='$shipping_total', total='$order_total', status='$order_status', created=NOW()");
+//						$order_id = mysql_insert_id();
+//
+//						if ($total > 0)
+//						{
+//							while ($row = mysql_fetch_array($result))
+//							{
+//								$item_id		= (int)$row['item_id'];
+//								$title			= mysql_real_escape_string($row['title']);
+//								$quantity		= mysql_real_escape_string($_SESSION['quantity'][$item_id]);
+//								$item_price		= mysql_real_escape_string($row['price']);
+//
+//								smart_mysql_query("INSERT INTO abbijan_order_items SET order_id='".(int)$order_id."', user_id='$userid', item_id='$item_id', item_title='$title', item_quantity='$quantity', item_price='$item_price'");
+//							}
+//						}
+//
+//						// send order receipt
+//						SendReceipt($order_id);
+//
+//						unset($_SESSION['cart_items'], $_SESSION['quantity'], $_SESSION['ShippingPrice'], $_SESSION['Total']);
+//						
+//						header ("Location: /payment_success.php");
+//						exit();				
+//					}
+//					else
+//					{
+//						smart_mysql_query("INSERT INTO abbijan_orders SET reference_id='$reference_id', shipping_id='$shipping_id', user_id='$userid', shipping_method_id='$shipping_method', shipping_details='$shipping_address', payment_method_id='$payment_method', payment_method='$payment_method_name', payment_details='$payment_details', total='$order_total', status='$order_status', reason='$decline_reason', created=NOW()");
+//
+//						header ("Location: /payment_cancelled.php");
+//						exit;
+//					}
+//
+//				}
+//				else
+//				{
 					$oresult = smart_mysql_query("INSERT INTO abbijan_orders SET reference_id='$reference_id', shipping_id='$shipping_id', user_id='$userid', shipping_method_id='$shipping_method', shipping_details='$shipping_address', payment_method_id='$payment_method', payment_method='$payment_method_name', currency='".SITE_CURRENCY_CODE."', shipping_total='$shipping_total', total='$order_total', status='complete', created=NOW()");
 					$order_id = mysql_insert_id();
 
@@ -302,7 +302,7 @@
 						
 					header ("Location: /payment_success.php");
 					exit();	
-				}
+//				}
 		}
 		else
 		{
@@ -328,9 +328,9 @@
 		<td class="" valign="top">
 			<span class="number">2 </span> <span class="title">Your Details</span>
 		</td>
-		<td class="" valign="top">
+<!--		<td class="" valign="top">
 			<span class="number">3 </span> <span class="title">Payment Method</span>
-		</td>
+		</td>-->
 		<td class="first active" valign="top">
 			<span class="number">4 </span> <span class="title">Checkout</span>
 		</td>
@@ -353,7 +353,6 @@
 	<form action="" method="post" id="form1" name="form1">
 
 	<div style="float: left; width: 45%; min-height: 350px;">
-
 	<center><h2>1. Shipping Method</h2></center>
 	<?php
 			$d_query = "SELECT * FROM abbijan_shipping_methods WHERE (countries LIKE '%$country%' OR countries='all') AND status='active'";
@@ -363,7 +362,7 @@
 			if ($d_total > 0) {
 	?>
 			<?php while ($d_row = mysql_fetch_array($d_result)) { ?>
-				<input type="radio" name="shipping_method" value="<?php echo $d_row['shipping_method_id']; ?>" <?php if ($shipping_method == $d_row['shipping_method_id']) echo 'checked="checked"'; ?>/>
+				<input class="shipping_method_radio" type="radio" name="shipping_method" value="<?php echo $d_row['shipping_method_id']; ?>" <?php if ($shipping_method == $d_row['shipping_method_id']) echo 'checked="checked"'; ?>/>
 				<b><?php echo $d_row['title']; ?></b> (+ <?php echo DisplayPrice($d_row['cost']); ?>)
 				<?php if ($d_row['delivery_time'] != "") { ?> <sup><?php echo $d_row['delivery_time']; ?></sup><br/><?php } ?>
 				<?php if ($d_row['desciption'] != "") { ?><?php echo $d_row['desciption']; ?><br/><?php } ?>
@@ -415,15 +414,15 @@
             <td align="right" valign="middle"><span class="req">* </span>Last Name:</td>
 			<td align="left" valign="top"><input type="text" id="lname" name="lname" size="25" value="<?php echo getPostParameter('lname'); ?>" class="textbox" /></td>
 		</tr>
-		<tr>
+		<tr id="addressTR">
             <td align="right" valign="middle"><span class="req">* </span>Address:</td>
 			<td align="left" valign="top"><input type="text" id="address" name="address" size="25" value="<?php echo getPostParameter('address'); ?>" class="textbox" /></td>
 		</tr>
-		<tr>
+		<tr id="address2TR">
             <td align="right" valign="middle">Address Line 2:</td>
 			<td align="left" valign="top"><input type="text" id="address2" name="address2" size="25" value="<?php echo getPostParameter('address2'); ?>" class="textbox" /></td>
 		</tr>
-		<tr>
+		<tr id="countryTR">
             <td align="right" valign="middle"><span class="req">* </span>Country:</td>
 			<td align="left" valign="top">
 				<select name="country" class="textbox2" id="country" style="width: 170px;" onChange="document.form1.submit()">
@@ -447,16 +446,16 @@
 				</select>			
 			</td>
 		</tr>
-		<tr>
+		<tr  id="cityTR">
             <td align="right" valign="middle"><span class="req">* </span>City:</td>
 			<td align="left" valign="top"><input type="text" id="city" name="city" size="25" value="<?php echo getPostParameter('city'); ?>" class="textbox" /></td>
 		</tr>
-		<tr>
+		<tr id="stateTR">
             <td align="right" valign="middle"><span class="req">* </span>State:</td>
 			<td align="left" valign="top"><input type="text" id="state" name="state" size="25" value="<?php echo getPostParameter('state'); ?>" class="textbox" />
 			</td>
 		</tr>
-		<tr>
+		<tr id="zipTR">
             <td align="right" valign="middle"><span class="req">* </span>Zip Code:</td>
 			<td align="left" valign="top"><input type="text" id="zip" name="zip" size="25" value="<?php echo getPostParameter('zip'); ?>" class="textbox" /></td>
 		</tr>
@@ -466,8 +465,6 @@
 		</tr>
 		</table>
 	</div>
-	</div>
-
 	<div style="float: right; width: 48%; text-align: center;">
 
 		<script type="text/javascript">
@@ -483,7 +480,7 @@
 		</script>
 
 	
-	<h2>3. Payment Method</h2>
+<!--	<h2>3. Payment Method</h2>
 
 	<?php
 			$pmethods_query = "SELECT * FROM abbijan_payment_methods WHERE status='active'";
@@ -631,11 +628,12 @@
 		<td align="left" valign="top"><input type="text" id="billing_phone" name="billing_phone" size="25" value="<?php echo getPostParameter('billing_phone'); ?>" class="textbox" /></td>
 	</tr>
 	</table>
-	</div>
+	</div>-->
 
-	</div>
+	<!--</div>-->
+        
 	<div style="clear: both;"></div>
-
+        </div>
 		<div style="margin-top: 10px; border-top: 3px solid #F7F7F7; padding: 5px 0;">
 		<table width="100%" align="center" border="0" cellspacing="3" cellpadding="3">
 		<tr>
@@ -648,9 +646,11 @@
 			</td>
 		</tr>
 		</table>
-		</div>
-
+		
+            
 	</form>
-
+</div>
+        </div>
+<div>
 
 <?php require_once ("inc/footer.inc.php"); ?>

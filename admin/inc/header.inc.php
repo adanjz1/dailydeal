@@ -28,7 +28,7 @@
 <div id="wrapper">
 
 	<div id="header">
-		<div id="logo"><a href="" target="_blank"><img src="./images/logo.png" border="0" /></a></div>
+		<div id="logo"><a href="" target="_blank"><img height="75" src="./images/logo.png" border="0" /></a></div>
 		<div id="right_header">
 			Welcome, admin! <a href="<?php echo SITE_URL; ?>" target="_blank">View Site</a> | <a class="logout" href="logout.php">Logout</a>
 		</div>

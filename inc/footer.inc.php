@@ -58,7 +58,7 @@
 	</div>
 
 	<!-- Do not remove this copyright notice! -->
-		<div class="powered-by-abbijan">Powered by <a href="" target="_blank">abbijan</a><div>
+		<!--<div class="powered-by-abbijan">Powered by <a href="" target="_blank">abbijan</a><div>-->
 	<!-- Do not remove this copyright notice! -->
 </div>
 

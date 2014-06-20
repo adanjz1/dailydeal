@@ -86,7 +86,7 @@ body {
 }
 
 .cart a {
-	color: #67DB08;
+	color: #5e4b61;
 	font-weight: bold;
 }
 
@@ -142,8 +142,8 @@ body {
 	margin: 0;
 	display: block;
 	float: left;
-	background: #9CE50B;
-	border-bottom: 1px solid #89CC04;
+	background: #5e4b61;
+	border-bottom: 1px solid #694863;
 }
 
 #menu a {
@@ -386,7 +386,7 @@ a {
 }
 
 a:hover {
-	color: #9CE50B;
+	color: #5e4b61;
 	text-decoration: none;
 }
 
@@ -416,7 +416,7 @@ a.button {
 	padding: 6px 15px;
 	margin-right: 10px;
     display: inline;
-    background: #86DD46;
+    background: #5e4b61;
     border: none;
     color: #FFFFFF;
     cursor: pointer;
@@ -426,7 +426,7 @@ a.button {
 	text-decoration: none;
 }
 .button:hover {
-	background: #A1F959;
+	background: #793e63;
 }
 
 a.favorites {
@@ -634,14 +634,14 @@ a:hover.cat_link {
 	text-decoration: none;
 	white-space: nowrap;
 	padding: 5px 9px;
-	background: #9CE50B;
+	background: #5e4b61;
 }
 
 a.cat_link_active {
 	white-space: nowrap;
 	padding: 5px 9px;
 	margin-left: 3px;
-	background: #9CE50B;
+	background: #5e4b61;
 	color: #FFF;
 	border-radius: 5px;
 	text-decoration: none;
@@ -1026,8 +1026,8 @@ textarea {
 .submit, .checkout {
 	margin:0;
 	padding: 5px 10px 5px 10px;
-	border: 1px solid #6FE812;
-	background: #6FE812;
+	border: 1px solid #5e4b61;
+	background: #5e4b61;
 	color: #FFFFFF;
 	font-size: 11px;
 	font-family: Tahoma, Verdana, Arial, sans-serif;
@@ -1045,8 +1045,8 @@ textarea {
 }
 
 .submit:hover {
-	border: 1px solid #96EC57;
-	background: #96EC57;
+	border: 1px solid #932464;
+	background: #932464;
 }
 
 .checkout {
@@ -1124,7 +1124,7 @@ div.pagination a {
 }
 
 div.pagination a:hover {
-	color: #9CE50B;
+	color: #5e4b61;
 	padding: 3px 7px;
 }
 
@@ -1593,7 +1593,7 @@ tr.cart_row_odd:hover, tr.cart_row_even:hover {
 }
 
 .price {
-	color: #96EC57;
+	color: #932464;
 	font-family: 'Oswald', 'Droid Serif', Georgia, Times, serif;
 	font-size: 37px;
 	font-weight: bold;
@@ -1639,7 +1639,7 @@ a.buy_large {
 	font-weight: normal;
 	padding: 5px 25px;
     display: inline;
-    background: #72ED0E;
+    background: #932464;
     border: none;
     color: #FFFFFF;
     cursor: pointer;
@@ -1650,7 +1650,7 @@ a.buy_large {
 }
 
 .buy_large:hover {
-	background: #80FC1B;
+	background: #aa0065;
 }
 
 a.buy {
@@ -1659,7 +1659,7 @@ a.buy {
 	font-weight: bold;
 	padding: 7px 11px;
     display: inline;
-    background: #A1F959;
+    background: #793e63;
     border: none;
     color: #FFFFFF;
     cursor: pointer;
@@ -1670,7 +1670,7 @@ a.buy {
 }
 
 .buy:hover {
-	background: #72ED0E;
+	background: #932464;
 }
 
 .expired {
@@ -1864,7 +1864,7 @@ deal-list {
     font-size: 27px;
     padding-bottom: 5px;
     text-align: center;
-	color: #5AD60C;
+	color: #5e4b61;
 	margin-top: 5px;
 }
 .deal-price span {
@@ -2039,7 +2039,7 @@ a:hover.forum_title {
 }
 #tabs li a:hover {
 	color: #FFF;
-	background: #80D63E;
+	background: #5e4b61;
 	padding: 5px 10px;
 }
 #tabs li.active a {

@@ -81,6 +81,11 @@
 		<?php if ($_GET['msg'] == 1) { ?>
 			<h1>Thank you for registration!</h1><p>An activation email has been sent to your email address (don't forget to check your SPAM folder).</p>
 			<p>Please check your email and click on the activation link.</p>
+                        <script type="text/javascript">
+                        window.setTimeout(function() {
+                            location.href = '/login.php';
+                        }, 4000);
+                        </script>
 		<?php } ?>
 		
 		<?php if ($_GET['msg'] == 2) { ?>
