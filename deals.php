@@ -215,7 +215,7 @@
 		<?php } ?>
 		</div>
 
-		<?php/* if ($row['retail_price'] != "0.00") { ?>
+		<?php if ($row['retail_price'] != "0.00") { ?>
 		<table class="deal-savings">
 			<tr>
 				<td class="deal-regular-price"><span>Value</span><?php echo DisplayPrice($row['retail_price']); ?></td>
@@ -223,7 +223,7 @@
 				<td class="deal-discount-amount"><span>Savings</span><?php echo DisplayPrice($row['discount']); ?></td>
 			</tr>
 		</table>
-		<?php }*/ ?>
+		<?php } ?>
 
 		<?php if ($row['status'] == "expired") { ?>
 			<b>Deal has ended!</b>
