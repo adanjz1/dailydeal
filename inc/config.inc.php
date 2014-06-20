@@ -13,7 +13,7 @@
 	/// DATABASE SETTINGS ///////////////////////////////////////////////////////////////////////////
 	define('DB_NAME', 'abbijan');				// MySQL database name
 	define('DB_USER', 'root');				// MySQL database user
-	define('DB_PASSWORD', '');			// MySQL database password
+	define('DB_PASSWORD', '123456');			// MySQL database password
 	define('DB_HOST', 'localhost');		// MySQL database host name (in most cases, it's localhost)	
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
